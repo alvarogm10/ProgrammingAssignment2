@@ -13,8 +13,8 @@ makeCacheMatrix <- function(x = matrix()) {
 	setinvr <- function(invr) m <<- invr
 	getinvr <- function() m
 	list(set = set, get = get, 
-		setmean = setmean,
-		getmean = getmean)
+		setinvr = setinvr,
+		getinvr = getinvr)
 }
 
 
@@ -22,5 +22,13 @@ makeCacheMatrix <- function(x = matrix()) {
 ##if it was calculated before with makeCacheMatrix
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+	m <- x$getinvr()
+	if(!is.null(m)){
+		message("getting cached data")
+		return(m)
+	}
+	data <- x$get()
+	m <- solve(data)
+	x$setinvr(m)
+	m        
 }
